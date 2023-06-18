@@ -11,7 +11,7 @@ Terminal Speedcubing Program written in Go
 - [x]Timer
 - []Format Timer return value in 'min:sec:ns' if return value > 60sec
 - []Func GenerateScramble
-- []General UI
+- [x]General UI
 - []Timer using ascii
 - []Save attempts in json
 - []Display scramble result with #'s and color
