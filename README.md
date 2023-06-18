@@ -1,10 +1,11 @@
 # GoTSP
-Terminal Speedcubing app written in Go
+Terminal Speedcubing Program written in Go
 
 
 # Build/Notes
 
 * https://github.com/nsf/termbox-go -- to check for keystrokes in terminal
+* https://github.com/AlecAivazis/survey/v2 -- for UI/Selector
 
 # Add:
 - [x]Timer
