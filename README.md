@@ -20,18 +20,22 @@ WCA lays out its requirements for cube scrambling in a competition. Nearly all c
 
 In this function, current time `time.Now()` is used as a seed for the Scramble generator
 
-###### Flow
-(1) scrambles that count as a double(M2, B2, ..etc) wont have an apostrophe.
+##### Flow
+**(1)** Scrambles that count as a double(M2, B2, ..etc) wont have an apostrophe.
+**(2)** Scramble doesn't contain two of the same letter moves in a row.
+**(3)** Scramble doesn't contain two double-moves in a row.
+
 
 # Add:
 - [x]Timer
 - []Format Timer return value in 'min:sec:ns' if return value > 60sec
-- []Func GenerateScramble
+- [x]Func GenerateScramble
 - [x]General UI
 - []Timer using ascii
 - []Save attempts in json
 - []Display scramble result with #'s and color
 - []Display PBtimeDelta on Timer
 - []Add timer documentation
+- []Improve GenerateScramble flow with using prefix aproach ("2"||"'"||"")
 
 
