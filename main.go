@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -32,7 +33,9 @@ func ui() {
 	if Uinput == "Speedcube" {
 		fmt.Println("Speedcube time")
 	} else if Uinput == "Scramble" {
-		fmt.Println("Get a random scramble between 10-16 moves")
+		clearScreen()
+		fmt.Println("Apply the scramble with white on the top and green on the front:")
+		fmt.Println(GenerateScramble())
 	} else if Uinput == "View leaderboard" {
 		fmt.Println("Nothing much to see here")
 	} else if Uinput == "Timer" {
@@ -45,6 +48,47 @@ func ui() {
 		fmt.Printf("Timer stopped, Elapsed time: %.3f seconds\n", duration.Seconds())
 		// return to menu or quit prompt
 	}
+}
+
+func GenerateScramble() []string {
+	var Scramble []string
+	Moves := []string{"U", "D", "R", "L", "F", "B", "M"}
+	seed := time.Now().UnixNano()
+	RandomGenerator := rand.New(rand.NewSource(seed))
+
+	scrambleLength := RandomGenerator.Intn(8) + 14
+	var lastScrambleLetter string
+	var lastScrambleDouble int
+	for i := 0; i < scrambleLength; i++ {
+		var currentScramble string
+		scrambleMove := RandomGenerator.Intn(7)
+		scrambleMoveLetter := Moves[scrambleMove]
+		scrambleDouble := RandomGenerator.Intn(2)
+		scrambleApostrophe := RandomGenerator.Intn(2)
+
+		if scrambleDouble == 0 {
+			if scrambleApostrophe == 1 {
+				currentScramble = scrambleMoveLetter + "'"
+			} else {
+				currentScramble = scrambleMoveLetter
+			}
+		} else {
+			if lastScrambleDouble == 1 {
+				currentScramble = scrambleMoveLetter
+			} else {
+				currentScramble = scrambleMoveLetter + "2"
+			}
+		}
+		if scrambleMoveLetter == lastScrambleLetter {
+			i--
+			continue
+		} else {
+			Scramble = append(Scramble, currentScramble)
+		}
+		lastScrambleLetter = scrambleMoveLetter
+		lastScrambleDouble = scrambleDouble
+	}
+	return Scramble
 }
 
 func Timer() time.Duration {
