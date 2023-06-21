@@ -38,5 +38,5 @@ In this function, current time `time.Now()` is used as a seed for the Scramble g
 - []Add timer documentation
 - []Improve GenerateScramble flow with using prefix aproach ("2"||"'"||"")
 - []Add UI flow to all options.
-
+- []Set Estimated completion time
 
