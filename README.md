@@ -56,4 +56,4 @@ In this function, current time `time.Now()` is used as a seed for the Scramble g
 - [x]Add timer documentation
 - []Add UI flow to all options. {Working On it}
 - [x]Set Estimated completion time: 28.06.2023
-**Completed 6/11**
+***Completed 6/11***
