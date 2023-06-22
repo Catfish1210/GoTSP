@@ -45,8 +45,14 @@ func ui() {
 		fmt.Scanln()
 		clearScreen()
 		duration := Timer()
-		fmt.Printf("Timer stopped, Elapsed time: %.3f seconds\n", duration.Seconds())
-		// return to menu or quit prompt
+    if duration.Seconds() > 60 {
+      minutes := int(duration.Minutes())
+      seconds := int(duration.Seconds()) - (minutes * 60)
+      fmt.Printf("Timer stopped, Elapsed time: %dmin %dsec\n", minutes, seconds)
+    } else {
+      fmt.Printf("Timer stopped, Elapsed time: %.3f seconds\n", duration.Seconds())
+    }
+    // return to menu or quit prompt
 	}
 }
 
