@@ -9,6 +9,24 @@ Terminal Speedcubing Program written in Go
 * https://github.com/nsf/termbox-go -- to check for keystrokes in terminal
 * https://github.com/AlecAivazis/survey/v2 -- for UI/Selector
 
+### Timer
+Timer function that measures elapsed time between 2 spacebar presses.
+
+It can be used in various applications where measuring time is essential,
+such as performance testing &| time-based challenges (like Speedcubing).
+
+Timer is centered and refreshed with using termbox-go.
+
+Tldr: the Timer function allows users to start and stop the timer and returns the elapsed time between.
+
+##### Flow
+1. Wait for user to start timer with spacebar
+2. Once timer is started, a goroutine is launched to update the elapsed time continously
+3. goroutine calculates the elapsed time and refreshes the display accordingly
+4. If user presses spacebar, the timer stops and breaks out of the event-loop
+5. Then the function records the stop time and returns the duration between the start and stop times 
+
+
 ### GenerateScramble
 Scramblers are imperative in cubing. Without them, you cannot scramble a cube according to regulations, ensure that people have the same scrambles in competition, or practice effectively.
 
@@ -28,15 +46,14 @@ In this function, current time `time.Now()` is used as a seed for the Scramble g
 
 # Add:
 - [x]Timer
-- []Format Timer return value in 'min:sec:ns' if return value > 60sec
+- [x]Format Timer return value in 'min:sec' if return value > 60sec
 - [x]Func GenerateScramble
 - [x]General UI
 - []Timer using ascii
 - []Save attempts in json
 - []Display scramble result with #'s and color
 - []Display PBtimeDelta on Timer
-- []Add timer documentation
-- []Improve GenerateScramble flow with using prefix aproach ("2"||"'"||"")
-- []Add UI flow to all options.
-- []Set Estimated completion time
-
+- [x]Add timer documentation
+- []Add UI flow to all options. {Working On it}
+- [x]Set Estimated completion time: 28.06.2023
+**Completed 6/11**
