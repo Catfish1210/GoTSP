@@ -44,6 +44,9 @@ In this function, current time `time.Now()` is used as a seed for the Scramble g
 3. Scramble doesn't contain two double-moves in a row.
 
 
+### DisplayTimeASCII
+##### Flow
+
 # Add:
 - [x]Timer
 - [x]Format Timer return value in 'min:sec' if return value > 60sec
@@ -54,6 +57,8 @@ In this function, current time `time.Now()` is used as a seed for the Scramble g
 - []Display scramble result with #'s and color
 - []Display PBtimeDelta on Timer
 - [x]Add timer documentation
-- []Add UI flow to all options. {Working On it}
+- []Add UI flow to all options.
 - [x]Set Estimated completion time: 28.06.2023
-***Completed 6/11***
+- []Center UI with termbox
+##### 
+***Completed 6/12***
