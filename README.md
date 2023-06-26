@@ -52,13 +52,15 @@ In this function, current time `time.Now()` is used as a seed for the Scramble g
 - [x]Format Timer return value in 'min:sec' if return value > 60sec
 - [x]Func GenerateScramble
 - [x]General UI
-- []Timer using ascii
+- [x]Timer result using ascii
+- []Timer result using ascii (above 1min output fix)
+- []Add a function wrapper to survey.question
 - []Save attempts in json
-- []Display scramble result with #'s and color
 - []Display PBtimeDelta on Timer
 - [x]Add timer documentation
 - []Add UI flow to all options.
-- [x]Set Estimated completion time: 28.06.2023
+- [x]Set Estimated completion time: 29.06.2023
 - []Center UI with termbox
+- []Flags to launch straight into -speedcubing -scramble -leaderboard -timer 
 ##### 
-***Completed 6/12***
+***Completed 7/14***
