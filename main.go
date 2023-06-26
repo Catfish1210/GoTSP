@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+
 	//	"os"
 	"time"
 
@@ -32,9 +33,15 @@ func ui() {
 	}))
 
 	if Uinput == "Speedcube" {
-		fmt.Println("Speedcube time")
-		duration := Timer()
-		displayTimeASCII(duration)
+		// fmt.Println("Speedcube time")
+		// duration := Timer()
+		// displayTimeASCII(duration)
+		var cube RubiksCubeState
+		cube = setRubiksStateSolved(cube)
+		fmt.Println(cube)
+		rotate("R", cube)
+		rotate("R'", cube)
+		fmt.Println(cube)
 	} else if Uinput == "Scramble" {
 		clearScreen()
 		fmt.Println("Apply the scramble with white on the top and green on the front:")
@@ -98,6 +105,106 @@ func GenerateScramble() []string {
 		lastScrambleDouble = scrambleDouble
 	}
 	return Scramble
+}
+
+type RubiksCubeState struct {
+	greenface  []string
+	orangeface []string
+	blueface   []string
+	redface    []string
+	whiteface  []string
+	yellowface []string
+}
+
+func setRubiksStateSolved(cube RubiksCubeState) RubiksCubeState {
+	for i := 0; i < 9; i++ {
+		cube.greenface = append(cube.greenface, "G")
+		cube.orangeface = append(cube.orangeface, "O")
+		cube.blueface = append(cube.blueface, "B")
+		cube.redface = append(cube.redface, "R")
+		cube.whiteface = append(cube.whiteface, "W")
+		cube.yellowface = append(cube.yellowface, "Y")
+	}
+	return cube
+}
+
+func rotate(move string, cube RubiksCubeState) {
+
+	switch move {
+	case "U":
+		tempgreen := []string{cube.greenface[0], cube.greenface[1], cube.greenface[2]}
+		temporange := []string{cube.orangeface[0], cube.orangeface[1], cube.orangeface[2]}
+		tempblue := []string{cube.blueface[0], cube.blueface[1], cube.blueface[2]}
+		tempred := []string{cube.redface[0], cube.redface[1], cube.redface[2]}
+
+		cube.greenface[0], cube.greenface[1], cube.greenface[2] = tempred[0], tempred[1], tempred[2]
+		cube.orangeface[0], cube.orangeface[1], cube.orangeface[2] = tempgreen[0], tempgreen[1], tempgreen[2]
+		cube.blueface[0], cube.blueface[1], cube.blueface[2] = temporange[0], temporange[1], temporange[2]
+		cube.redface[0], cube.redface[1], cube.redface[2] = tempblue[0], tempblue[1], tempblue[2]
+	case "U'":
+		tempgreen := []string{cube.greenface[0], cube.greenface[1], cube.greenface[2]}
+		temporange := []string{cube.orangeface[0], cube.orangeface[1], cube.orangeface[2]}
+		tempblue := []string{cube.blueface[0], cube.blueface[1], cube.blueface[2]}
+		tempred := []string{cube.redface[0], cube.redface[1], cube.redface[2]}
+
+		cube.greenface[0], cube.greenface[1], cube.greenface[2] = temporange[0], temporange[1], temporange[2]
+		cube.orangeface[0], cube.orangeface[1], cube.orangeface[2] = tempblue[0], tempblue[1], tempblue[2]
+		cube.blueface[0], cube.blueface[1], cube.blueface[2] = tempred[0], tempred[1], tempred[2]
+		cube.redface[0], cube.redface[1], cube.redface[2] = tempgreen[0], tempgreen[1], tempgreen[2]
+
+	case "R":
+		tempgreen := []string{cube.greenface[2], cube.greenface[5], cube.greenface[8]}
+		tempwhite := []string{cube.whiteface[2], cube.whiteface[5], cube.whiteface[8]}
+		tempblue := []string{cube.blueface[2], cube.blueface[5], cube.blueface[8]}
+		tempyellow := []string{cube.yellowface[2], cube.yellowface[5], cube.yellowface[8]}
+
+		cube.greenface[2], cube.greenface[5], cube.greenface[8] = tempyellow[0], tempyellow[1], tempyellow[2]
+		cube.whiteface[2], cube.whiteface[5], cube.whiteface[8] = tempgreen[0], tempgreen[1], tempgreen[2]
+		cube.blueface[0], cube.blueface[3], cube.blueface[6] = tempwhite[0], tempwhite[1], tempwhite[2]
+		cube.yellowface[2], cube.yellowface[5], cube.yellowface[8] = tempblue[0], tempblue[1], tempblue[2]
+
+	case "R'":
+		tempgreen := []string{cube.greenface[2], cube.greenface[5], cube.greenface[8]}
+		tempwhite := []string{cube.whiteface[2], cube.whiteface[5], cube.whiteface[8]}
+		tempblue := []string{cube.blueface[2], cube.blueface[5], cube.blueface[8]}
+		tempyellow := []string{cube.yellowface[2], cube.yellowface[5], cube.yellowface[8]}
+
+		cube.greenface[2], cube.greenface[5], cube.greenface[8] = tempwhite[0], tempwhite[1], tempwhite[2]
+		cube.whiteface[2], cube.whiteface[5], cube.whiteface[8] = tempblue[0], tempblue[1], tempgreen[2]
+		cube.blueface[0], cube.blueface[3], cube.blueface[6] = tempyellow[0], tempyellow[1], tempyellow[2]
+		cube.yellowface[2], cube.yellowface[5], cube.yellowface[8] = tempgreen[0], tempgreen[1], tempgreen[2]
+
+	case "D":
+		tempgreen := []string{cube.greenface[6], cube.greenface[7], cube.greenface[8]}
+		temporange := []string{cube.orangeface[6], cube.orangeface[7], cube.orangeface[8]}
+		tempblue := []string{cube.blueface[6], cube.blueface[7], cube.blueface[8]}
+		tempred := []string{cube.redface[6], cube.redface[7], cube.redface[8]}
+
+		cube.greenface[6], cube.greenface[7], cube.greenface[8] = temporange[0], temporange[1], temporange[2]
+		cube.orangeface[6], cube.orangeface[7], cube.orangeface[8] = tempblue[0], tempblue[1], tempblue[2]
+		cube.blueface[6], cube.blueface[7], cube.blueface[8] = tempred[0], tempred[1], tempred[2]
+		cube.redface[6], cube.redface[7], cube.redface[8] = tempgreen[0], tempgreen[1], tempgreen[2]
+
+	case "D'":
+		tempgreen := []string{cube.greenface[6], cube.greenface[7], cube.greenface[8]}
+		temporange := []string{cube.orangeface[6], cube.orangeface[7], cube.orangeface[8]}
+		tempblue := []string{cube.blueface[6], cube.blueface[7], cube.blueface[8]}
+		tempred := []string{cube.redface[6], cube.redface[7], cube.redface[8]}
+
+		cube.greenface[6], cube.greenface[7], cube.greenface[8] = tempred[0], tempred[1], tempred[2]
+		cube.orangeface[6], cube.orangeface[7], cube.orangeface[8] = tempgreen[0], tempgreen[1], tempgreen[2]
+		cube.blueface[6], cube.blueface[7], cube.blueface[8] = temporange[0], temporange[1], temporange[2]
+		cube.redface[6], cube.redface[7], cube.redface[8] = tempblue[0], tempblue[1], tempblue[2]
+
+	}
+}
+
+// DONE"U", "D", DONE"R", "L", "F", "B", "M"
+
+func GenerateVisualScramble(scramble []string) {
+	var cube RubiksCubeState
+	cube = setRubiksStateSolved(cube)
+
 }
 
 func Timer() time.Duration {
