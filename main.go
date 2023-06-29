@@ -171,17 +171,6 @@ type asciiContainer struct {
 }
 
 func fillAsciiContainer(duration time.Duration, timeSlice [][]int) asciiContainer {
-	// ascii0 := []string{"   ___  ", "  / _ \\ ", " | | | |", " | |_| |", "  \\___/ "}
-	// ascii1 := []string{"  _ ", " / |", " | |", " | |", " |_|"}
-	// ascii2 := []string{"  ____  ", " |___ \\ ", "   __) |", "  / __/ ", " |_____|"}
-	// ascii3 := []string{"  _____ ", " |___ / ", "   |_ \\ ", "  ___) |", " |____/ "}
-	// ascii4 := []string{"  _  _   ", " | || |  ", " | || |_ ", " |__   _|", "    |_|  "}
-	// ascii5 := []string{"  ____  ", " | ___| ", " |___ \\ ", "  ___) |", " |____/ "}
-	// ascii6 := []string{"   __   ", "  / /_  ", " | '_ \\ ", " | (_) |", "  \\___/ "}
-	// ascii7 := []string{"  _____ ", " |___  |", "    / / ", "   / /  ", "  /_/   "}
-	// ascii8 := []string{"   ___  ", "  ( _ ) ", "  / _ \\ ", " | (_) |", "  \\___/ "}
-	// ascii9 := []string{"   ___  ", "  / _ \\ ", " | (_) |", "  \\__, |", "    /_/ "}
-	// asciispace := []string{" ", " ", " ", " ", " "}
 	asciidot := []string{"    ", "    ", "    ", "  _ ", " (_)"}
 
 	asciiMap := map[int][]string{
@@ -197,29 +186,19 @@ func fillAsciiContainer(duration time.Duration, timeSlice [][]int) asciiContaine
 		9: ([]string{"   ___  ", "  / _ \\ ", " | (_) |", "  \\__, |", "    /_/ "}),
 	}
 
-	var isMinute bool
 	var isDoubleSeconds bool
 
-	if duration.Seconds() > 60 {
-		isMinute = true
-		//
+	if duration.Seconds() >= 10 {
+		isDoubleSeconds = true
 	} else {
-		isMinute = false
-		if duration.Seconds() >= 10 {
-			isDoubleSeconds = true
-		} else {
-			isDoubleSeconds = false
-		}
+		isDoubleSeconds = false
 	}
-	fmt.Println(isMinute)
 
 	var asciiTime asciiContainer
 	for i := 0; i <= 5; i++ {
-		//hotfix
 		if (i == 4 && isDoubleSeconds == false) || (i == 5 && isDoubleSeconds == true) {
 			break
 		}
-		//
 		numvalue := timeSlice[0][i]
 		asciiTime.line1 += asciiMap[numvalue][0]
 		asciiTime.line2 += asciiMap[numvalue][1]
@@ -234,6 +213,19 @@ func fillAsciiContainer(duration time.Duration, timeSlice [][]int) asciiContaine
 			asciiTime.line5 += asciidot[4]
 		}
 	}
+	asciiSecond := asciiContainer{
+		line1: "                ",
+		line2: "  ___  ___  ___ ",
+		line3: " / __|/ _ \\/ __|",
+		line4: " \\__ \\  __/ (__ ",
+		line5: " |___/\\___|\\___|",
+	}
+	asciiTime.line1 += asciiSecond.line1
+	asciiTime.line2 += asciiSecond.line2
+	asciiTime.line3 += asciiSecond.line3
+	asciiTime.line4 += asciiSecond.line4
+	asciiTime.line5 += asciiSecond.line5
+
 	return asciiTime
 }
 
