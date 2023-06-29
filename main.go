@@ -1,10 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"math/rand"
-
-	//	"os"
+	"os"
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -34,8 +35,18 @@ func ui() {
 
 	if Uinput == "Speedcube" {
 		fmt.Println("Speedcube time")
+		clearScreen()
+		fmt.Println("Apply the scramble with white on the top and green on the front:")
+		scramble := GenerateScramble()
+		fmt.Println(scramble)
+		fmt.Println("\nPress enter if the scramble is applied..")
+		fmt.Scanln()
+
 		duration := Timer()
+		resultToJson(scramble, duration)
+		clearScreen()
 		displayTimeASCII(duration)
+		// func resultToJson(scramble []string, duration time.duration) {}
 
 	} else if Uinput == "Scramble" {
 		clearScreen()
@@ -170,9 +181,22 @@ type asciiContainer struct {
 	line5 string
 }
 
+func displayTimeASCII(duration time.Duration) {
+	var asciiTime asciiContainer
+	if duration.Seconds() > 60 {
+		minutes := int(duration.Minutes())
+		seconds := int(duration.Seconds()) - (minutes * 60)
+		asciiTime = fillAsciiContainer(duration, [][]int{slicefyInt(seconds), slicefyInt(minutes)})
+	} else {
+		seconds := int(duration)
+		asciiTime = fillAsciiContainer(duration, [][]int{slicefyInt(seconds)})
+	}
+
+	fmt.Println(asciiTime.line1 + "\n" + asciiTime.line2 + "\n" + asciiTime.line3 + "\n" + asciiTime.line4 + "\n" + asciiTime.line5)
+}
+
 func fillAsciiContainer(duration time.Duration, timeSlice [][]int) asciiContainer {
 	asciidot := []string{"    ", "    ", "    ", "  _ ", " (_)"}
-
 	asciiMap := map[int][]string{
 		0: ([]string{"   ___  ", "  / _ \\ ", " | | | |", " | |_| |", "  \\___/ "}),
 		1: ([]string{"  _ ", " / |", " | |", " | |", " |_|"}),
@@ -185,15 +209,12 @@ func fillAsciiContainer(duration time.Duration, timeSlice [][]int) asciiContaine
 		8: ([]string{"   ___  ", "  ( _ ) ", "  / _ \\ ", " | (_) |", "  \\___/ "}),
 		9: ([]string{"   ___  ", "  / _ \\ ", " | (_) |", "  \\__, |", "    /_/ "}),
 	}
-
 	var isDoubleSeconds bool
-
 	if duration.Seconds() >= 10 {
 		isDoubleSeconds = true
 	} else {
 		isDoubleSeconds = false
 	}
-
 	var asciiTime asciiContainer
 	for i := 0; i <= 5; i++ {
 		if (i == 4 && isDoubleSeconds == false) || (i == 5 && isDoubleSeconds == true) {
@@ -225,7 +246,6 @@ func fillAsciiContainer(duration time.Duration, timeSlice [][]int) asciiContaine
 	asciiTime.line3 += asciiSecond.line3
 	asciiTime.line4 += asciiSecond.line4
 	asciiTime.line5 += asciiSecond.line5
-
 	return asciiTime
 }
 
@@ -241,18 +261,56 @@ func slicefyInt(num int) []int {
 	return numslice
 }
 
-func displayTimeASCII(duration time.Duration) string {
-	var asciiTime asciiContainer
-	if duration.Seconds() > 60 {
-		minutes := int(duration.Minutes())
-		seconds := int(duration.Seconds()) - (minutes * 60)
-		asciiTime = fillAsciiContainer(duration, [][]int{slicefyInt(seconds), slicefyInt(minutes)})
-	} else {
-		seconds := int(duration)
-		asciiTime = fillAsciiContainer(duration, [][]int{slicefyInt(seconds)})
+type toJson struct {
+	Date     string   `json:"Date"`
+	Time     string   `json:"Time"`
+	Scramble []string `json:"Scramble"`
+}
+
+func resultToJson(scramble []string, duration time.Duration) error {
+	result := toJson{
+		Date:     time.Now().Format("2006-01-02 15:04"),
+		Time:     fmt.Sprintf("%.3f sec", duration.Seconds()),
+		Scramble: scramble,
 	}
 
-	// fmt.Println("========")
-	fmt.Println(asciiTime.line1 + "\n" + asciiTime.line2 + "\n" + asciiTime.line3 + "\n" + asciiTime.line4 + "\n" + asciiTime.line5)
-	return (asciiTime.line1 + "\n" + asciiTime.line2 + "\n" + asciiTime.line3 + "\n" + asciiTime.line4 + "\n" + asciiTime.line5)
+	fileName := "leaderboard.json"
+
+	_, err := os.Stat(fileName)
+	if os.IsNotExist(err) {
+		jsonData := []toJson{result}
+		fileData, err := json.MarshalIndent(jsonData, "", "    ")
+		if err != nil {
+			return err
+		}
+
+		err = ioutil.WriteFile(fileName, fileData, 0644)
+		if err != nil {
+			return err
+		}
+
+	} else {
+		file, err := ioutil.ReadFile(fileName)
+		if err != nil {
+			return err
+		}
+
+		var jsonData []toJson
+		err = json.Unmarshal(file, &jsonData)
+		if err != nil {
+			return err
+		}
+
+		jsonData = append(jsonData, result)
+		fileData, err := json.MarshalIndent(jsonData, "", "    ")
+		if err != nil {
+			return err
+		}
+
+		err = ioutil.WriteFile(fileName, fileData, 0644)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
