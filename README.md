@@ -54,25 +54,15 @@ In this function, current time `time.Now()` is used as a seed for the Scramble g
 - [x]General UI
 - [x]Timer result using ascii
 - [x]Timer result using ascii
-- []Add a function wrapper to survey.question
+- []Make a function wrapper to survey.question
 - []Save attempts in json {Working on it}
 - []Display PBtimeDelta on Timer
 - [x]Add timer documentation
 - []Add UI flow to all options.
 - []Center UI with termbox
 - []Scramble from []string to string for json/leaderboard
+- []House-keeping on final
 ##### 
 ***Completed 7/14***
 
-# Fix:
-panic: runtime error: index out of range [2] with length 2
-goroutine 1 [running]:
-main.fillAsciiContainer(0x338c37160c, {0xc000193c30, 0x2, 0x7?})
-main.go:223 +0xede
-main.displayTimeASCII(0x338c37160c)
-main.go:189 +0x62d
-main.ui()
-main.go:48 +0x469
-main.main()
-main.go:17 +0x57
 
