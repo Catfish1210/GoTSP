@@ -55,14 +55,17 @@ In this function, current time `time.Now()` is used as a seed for the Scramble g
 - [x]Timer result using ascii
 - [x]Timer result using ascii
 - []Make a function wrapper to survey.question
-- []Save attempts in json {Working on it}
+- [x]Save attempts in json
 - []Display PBtimeDelta on Timer
 - [x]Add timer documentation
 - []Add UI flow to all options.
 - []Center UI with termbox
-- []Scramble from []string to string for json/leaderboard
+- [x]Scramble from []string to string for json/leaderboard
 - []House-keeping on final
+- []DisplayTimeASCII & fillAsciiContainer documentation (combn)
+- []Global error check function
+- []ID system/sort by time for JSON (extra ID struct for JSON parsing)
 ##### 
-***Completed 7/14***
+***Completed 9/17***
 
 
