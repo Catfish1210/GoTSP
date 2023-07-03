@@ -183,57 +183,66 @@ type asciiContainer struct {
 
 func displayTimeASCII(duration time.Duration) {
 	var asciiTime asciiContainer
-	if duration.Seconds() > 60 {
-		minutes := int(duration.Minutes())
-		seconds := int(duration.Seconds()) - (minutes * 60)
-		asciiTime = fillAsciiContainer(duration, [][]int{slicefyInt(seconds), slicefyInt(minutes)})
-	} else {
-		seconds := int(duration)
-		asciiTime = fillAsciiContainer(duration, [][]int{slicefyInt(seconds)})
-	}
+
+	// timeDecimal := int(duration)
+
+	x := fmt.Sprintf("%.3f", duration.Seconds())
+	fmt.Println(x)
+
+	asciiTime = fillAsciiContainer(x)
 
 	fmt.Println(asciiTime.line1 + "\n" + asciiTime.line2 + "\n" + asciiTime.line3 + "\n" + asciiTime.line4 + "\n" + asciiTime.line5)
 }
 
-func fillAsciiContainer(duration time.Duration, timeSlice [][]int) asciiContainer {
-	asciidot := []string{"    ", "    ", "    ", "  _ ", " (_)"}
-	asciiMap := map[int][]string{
-		0: ([]string{"   ___  ", "  / _ \\ ", " | | | |", " | |_| |", "  \\___/ "}),
-		1: ([]string{"  _ ", " / |", " | |", " | |", " |_|"}),
-		2: ([]string{"  ____  ", " |___ \\ ", "   __) |", "  / __/ ", " |_____|"}),
-		3: ([]string{"  _____ ", " |___ / ", "   |_ \\ ", "  ___) |", " |____/ "}),
-		4: ([]string{"  _  _   ", " | || |  ", " | || |_ ", " |__   _|", "    |_|  "}),
-		5: ([]string{"  ____  ", " | ___| ", " |___ \\ ", "  ___) |", " |____/ "}),
-		6: ([]string{"   __   ", "  / /_  ", " | '_ \\ ", " | (_) |", "  \\___/ "}),
-		7: ([]string{"  _____ ", " |___  |", "    / / ", "   / /  ", "  /_/   "}),
-		8: ([]string{"   ___  ", "  ( _ ) ", "  / _ \\ ", " | (_) |", "  \\___/ "}),
-		9: ([]string{"   ___  ", "  / _ \\ ", " | (_) |", "  \\__, |", "    /_/ "}),
+func fillAsciiContainer(timeDecimal string) asciiContainer {
+	// asciidot := []string{"    ", "    ", "    ", "  _ ", " (_)"}
+	asciiMap := map[rune][]string{
+		'0': ([]string{"   ___  ", "  / _ \\ ", " | | | |", " | |_| |", "  \\___/ "}),
+		'1': ([]string{"  _ ", " / |", " | |", " | |", " |_|"}),
+		'2': ([]string{"  ____  ", " |___ \\ ", "   __) |", "  / __/ ", " |_____|"}),
+		'3': ([]string{"  _____ ", " |___ / ", "   |_ \\ ", "  ___) |", " |____/ "}),
+		'4': ([]string{"  _  _   ", " | || |  ", " | || |_ ", " |__   _|", "    |_|  "}),
+		'5': ([]string{"  ____  ", " | ___| ", " |___ \\ ", "  ___) |", " |____/ "}),
+		'6': ([]string{"   __   ", "  / /_  ", " | '_ \\ ", " | (_) |", "  \\___/ "}),
+		'7': ([]string{"  _____ ", " |___  |", "    / / ", "   / /  ", "  /_/   "}),
+		'8': ([]string{"   ___  ", "  ( _ ) ", "  / _ \\ ", " | (_) |", "  \\___/ "}),
+		'9': ([]string{"   ___  ", "  / _ \\ ", " | (_) |", "  \\__, |", "    /_/ "}),
+		'.': ([]string{"    ", "    ", "    ", "  _ ", " (_)"}),
 	}
-	var isDoubleSeconds bool
-	if duration.Seconds() >= 10 {
-		isDoubleSeconds = true
-	} else {
-		isDoubleSeconds = false
-	}
+	// var isDoubleSeconds bool
+	// if duration.Seconds() >= 10 {
+	// 	isDoubleSeconds = true
+	// } else {
+	// 	isDoubleSeconds = false
+	// }
 	var asciiTime asciiContainer
-	for i := 0; i <= 5; i++ {
-		if (i == 4 && isDoubleSeconds == false) || (i == 5 && isDoubleSeconds == true) {
-			break
-		}
-		numvalue := timeSlice[0][i]
-		asciiTime.line1 += asciiMap[numvalue][0]
-		asciiTime.line2 += asciiMap[numvalue][1]
-		asciiTime.line3 += asciiMap[numvalue][2]
-		asciiTime.line4 += asciiMap[numvalue][3]
-		asciiTime.line5 += asciiMap[numvalue][4]
-		if (i == 0 && isDoubleSeconds == false) || (i == 1 && isDoubleSeconds == true) {
-			asciiTime.line1 += asciidot[0]
-			asciiTime.line2 += asciidot[1]
-			asciiTime.line3 += asciidot[2]
-			asciiTime.line4 += asciidot[3]
-			asciiTime.line5 += asciidot[4]
-		}
+	for _, v := range timeDecimal {
+		asciiTime.line1 += asciiMap[v][0]
+		asciiTime.line2 += asciiMap[v][1]
+		asciiTime.line3 += asciiMap[v][2]
+		asciiTime.line4 += asciiMap[v][3]
+		asciiTime.line5 += asciiMap[v][4]
+
 	}
+
+	// for i := 0; i < 5; i++ {
+	// 	// if (i == 4 && isDoubleSeconds == false) || (i == 5 && isDoubleSeconds == true) {
+	// 	// 	break
+	// 	// }
+	// 	numvalue := timeDecimal
+	// 	asciiTime.line1 += asciiMap[numvalue][0]
+	// 	asciiTime.line2 += asciiMap[numvalue][1]
+	// 	asciiTime.line3 += asciiMap[numvalue][2]
+	// 	asciiTime.line4 += asciiMap[numvalue][3]
+	// 	asciiTime.line5 += asciiMap[numvalue][4]
+	// 	if (i == 0 && isDoubleSeconds == false) || (i == 1 && isDoubleSeconds == true) {
+	// 		asciiTime.line1 += asciidot[0]
+	// 		asciiTime.line2 += asciidot[1]
+	// 		asciiTime.line3 += asciidot[2]
+	// 		asciiTime.line4 += asciidot[3]
+	// 		asciiTime.line5 += asciidot[4]
+	// 	}
+	// }
 	asciiSecond := asciiContainer{
 		line1: "                ",
 		line2: "  ___  ___  ___ ",
