@@ -21,9 +21,9 @@ type asciiContainer struct {
 }
 
 type toJson struct {
-	Date     string   `json:"Date"`
-	Time     string   `json:"Time"`
-	Scramble []string `json:"Scramble"`
+	Date     string `json:"Date"`
+	Time     string `json:"Time"`
+	Scramble string `json:"Scramble"`
 }
 
 func main() {
@@ -224,23 +224,24 @@ func fillAsciiContainer(timeDecimal string) asciiContainer {
 	return asciiTime
 }
 
-func slicefyInt(num int) []int {
-	var numslice []int
-	for num > 0 {
-		numslice = append(numslice, num%10)
-		num /= 10
-	}
-	for i, j := 0, len(numslice)-1; i < j; i, j = i+1, j-1 {
-		numslice[i], numslice[j] = numslice[j], numslice[i]
-	}
-	return numslice
-}
-
 func resultToJson(scramble []string, duration time.Duration) error {
+
+	var scrambleString string
+	// for _, move := range scramble {
+	// 	scrambleString += (move + " ")
+	// }
+
+	for i := 0; i < len(scramble); i++ {
+		scrambleString += scramble[i]
+		if i != len(scramble)-1 {
+			scrambleString += " "
+		}
+	}
+
 	result := toJson{
-		Date:     time.Now().Format("2006-01-02 15:04"),
-		Time:     fmt.Sprintf("%.3f sec", duration.Seconds()),
-		Scramble: scramble,
+		Date:     time.Now().Format("2006-01-02 15:04:05"),
+		Time:     fmt.Sprintf("%.3f", duration.Seconds()),
+		Scramble: scrambleString,
 	}
 
 	fileName := "leaderboard.json"
@@ -283,3 +284,16 @@ func resultToJson(scramble []string, duration time.Duration) error {
 	}
 	return nil
 }
+
+/* Outdated function(s), from refactoring */
+// func slicefyInt(num int) []int {
+// 	var numslice []int
+// 	for num > 0 {
+// 		numslice = append(numslice, num%10)
+// 		num /= 10
+// 	}
+// 	for i, j := 0, len(numslice)-1; i < j; i, j = i+1, j-1 {
+// 		numslice[i], numslice[j] = numslice[j], numslice[i]
+// 	}
+// 	return numslice
+// }
