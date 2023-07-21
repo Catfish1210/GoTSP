@@ -32,20 +32,7 @@ func main() {
 }
 
 func ui() {
-	Uinput := ""
-	prompt := &survey.Select{
-		Message:       "Welcome to GoTSP",
-		Options:       []string{"Speedcube", "Scramble", "View leaderboard", "Timer", "Quit"},
-		FilterMessage: "s",
-		VimMode:       true,
-		Filter:        nil,
-		Description:   nil,
-	}
-
-	survey.AskOne(prompt, &Uinput, nil, survey.WithIcons(func(icons *survey.IconSet) {
-		icons.Question.Text = "!"
-		icons.Question.Format = "red+b"
-	}))
+	Uinput := getUserOption("Welcome to GoTSP", []string{"Speedcube", "Scramble", "View leaderboard", "Timer", "Quit"})
 
 	if Uinput == "Speedcube" {
 		fmt.Println("Speedcube time")
@@ -60,7 +47,6 @@ func ui() {
 		resultToJson(scramble, duration)
 		clearScreen()
 		displayTimeASCII(duration)
-		// func resultToJson(scramble []string, duration time.duration) {}
 
 	} else if Uinput == "Scramble" {
 		clearScreen()
@@ -82,7 +68,19 @@ func ui() {
 		} else {
 			fmt.Printf("Timer stopped, Elapsed time: %.3f seconds\n", duration.Seconds())
 		}
-		// return to menu or quit prompt
+	} else if Uinput == "Quit" {
+		clearScreen()
+		os.Exit(0)
+	}
+	fmt.Println()
+	// return to menu or quit prompt
+	Uinput = getUserOption("What would you like to do?", []string{"Return to Main menu", "Quit"})
+	if Uinput == "Quit" {
+		clearScreen()
+		os.Exit(0)
+	} else {
+		clearScreen()
+		ui()
 	}
 }
 
@@ -277,4 +275,23 @@ func resultToJson(scramble []string, duration time.Duration) error {
 		}
 	}
 	return nil
+}
+
+func getUserOption(header string, options []string) string {
+	Uinput := ""
+	prompt := &survey.Select{
+		Message:       header,
+		Options:       options,
+		FilterMessage: "",
+		VimMode:       true,
+		Filter:        nil,
+		Description:   nil,
+	}
+
+	survey.AskOne(prompt, &Uinput, nil, survey.WithIcons(func(icons *survey.IconSet) {
+		icons.Question.Text = "!"
+		icons.Question.Format = "red+b"
+	}))
+
+	return Uinput
 }
