@@ -59,12 +59,11 @@ In this function, current time `time.Now()` is used as a seed for the Scramble g
 - []Display PBtimeDelta on Timer
 - [x]Add timer documentation
 - [x]Add UI flow to all options.
-- []Center UI with termbox
 - [x]Scramble from []string to string for json/leaderboard
 - []House-keeping on final
 - []DisplayTimeASCII & fillAsciiContainer documentation (combn)
 - []ID system/sort by time for JSON (extra ID struct for JSON parsing)
 ##### 
-***Completed 11/16***
+***Completed 11/15***
 
 
