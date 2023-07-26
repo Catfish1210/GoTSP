@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"sort"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -56,6 +59,14 @@ func ResultToJson(scramble []string, duration time.Duration) error {
 		}
 
 		jsonData = append(jsonData, result)
+
+		// sort by time anFunc
+		sort.Slice(jsonData, func(i, j int) bool {
+			timeI, _ := strconv.ParseFloat(strings.TrimSuffix(jsonData[i].Time, "s"), 64)
+			timeJ, _ := strconv.ParseFloat(strings.TrimSuffix(jsonData[j].Time, "s"), 64)
+			return timeI < timeJ
+		})
+
 		fileData, err := json.MarshalIndent(jsonData, "", "    ")
 		if err != nil {
 			return err
