@@ -15,11 +15,11 @@ type asciiContainer struct {
 
 func DisplayTimeASCII(duration time.Duration) {
 	timeDecimal := fmt.Sprintf("%.3f", duration.Seconds())
-	asciiTime := fillAsciiContainer(timeDecimal)
+	asciiTime := FillAsciiContainer(timeDecimal)
 	fmt.Println(asciiTime.line1 + "\n" + asciiTime.line2 + "\n" + asciiTime.line3 + "\n" + asciiTime.line4 + "\n" + asciiTime.line5)
 }
 
-func fillAsciiContainer(timeDecimal string) asciiContainer {
+func FillAsciiContainer(timeDecimal string) asciiContainer {
 	asciiMap := map[rune][]string{
 		'0': ([]string{"   ___  ", "  / _ \\ ", " | | | |", " | |_| |", "  \\___/ "}),
 		'1': ([]string{"  _ ", " / |", " | |", " | |", " |_|"}),
