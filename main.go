@@ -6,5 +6,5 @@ import (
 
 func main() {
 	Gotsp.ClearScreen()
-	Gotsp.Menu()
+	Gotsp.Menu2()
 }
