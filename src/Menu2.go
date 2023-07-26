@@ -15,6 +15,9 @@ func Menu2() {
 	}
 	defer termbox.Close()
 
+	highlight := 0
+	updateMenu(highlight)
+
 	keyPress := make(chan termbox.Event)
 	go func() {
 		for {
@@ -32,13 +35,73 @@ func Menu2() {
 			}
 		}
 		if keySeq.Ch == 'w' {
-			displayBanner()
+			highlight--
+			updateMenu(highlight)
+		}
+		if keySeq.Ch == 's' {
+
+			highlight++
+			updateMenu(highlight)
 		}
 	}
 
 	terminalHeight, terminalWidth := termbox.Size()
 	fmt.Println(os.Getuid(), "\n", time.Now(), "\n", terminalHeight, " ", terminalWidth)
 
+}
+
+func updateMenu(highlight int) {
+	displayBanner()
+	displayOptions(highlight)
+}
+
+func displayOptions(highlight int) {
+	terminalWidth, terminalHeight := termbox.Size()
+	optionPosX := (terminalWidth / 2) - (3)
+	optionPosY := (terminalHeight / 8) + 8
+	dynamicPosY := optionPosY
+	for i, option := range Options {
+		dynamicPosX := optionPosX - len(Options[i])/2
+
+		for _, char := range option {
+			if i != highlight {
+				termbox.SetCell(dynamicPosX, dynamicPosY, char, termbox.ColorLightMagenta, termbox.ColorDefault)
+				dynamicPosX++
+			} else {
+				termbox.SetCell(dynamicPosX, dynamicPosY, char, termbox.ColorLightMagenta|termbox.AttrBold, termbox.ColorDefault)
+				dynamicPosX++
+			}
+		}
+
+		dynamicPosY += 2
+	}
+	displaySelector(optionPosX, optionPosY, highlight)
+	termbox.Sync()
+
+}
+
+func displaySelector(dynamicPosX, dynamicPosY, highlight int) {
+	var lSelectorPosY, lSelectorPosX []int
+	lSelectorPosY = append(lSelectorPosY, dynamicPosY, dynamicPosY+2, dynamicPosY+4, dynamicPosY+6, dynamicPosY+8)
+	lSelectorPosX = append(lSelectorPosX, dynamicPosX-6, dynamicPosX-8, dynamicPosX-10, dynamicPosX-4, dynamicPosX-4)
+	var rSelectorPosX []int
+	rSelectorPosY := lSelectorPosY
+	rSelectorPosX = append(rSelectorPosX, dynamicPosX+6, dynamicPosX+7, dynamicPosX+9, dynamicPosX+4, dynamicPosX+3)
+
+	// Clean all selectors
+	for i := 0; i < 5; i++ {
+		termbox.SetCell(lSelectorPosX[i], lSelectorPosY[i], ' ', termbox.ColorDefault, termbox.ColorDefault)
+		termbox.SetCell(rSelectorPosX[i], rSelectorPosY[i], ' ', termbox.ColorDefault, termbox.ColorDefault)
+
+	}
+
+	// Apply selector for the highlighted option
+	termbox.SetCell(lSelectorPosX[highlight], lSelectorPosY[highlight], '>', termbox.ColorWhite|termbox.AttrBlink|termbox.AttrBold, termbox.ColorDefault)
+	termbox.SetCell(rSelectorPosX[highlight], rSelectorPosY[highlight], '<', termbox.ColorWhite|termbox.AttrBlink|termbox.AttrBold, termbox.ColorDefault)
+
+	// termbox.SetCell(lSelectorPosX[highlight], lSelectorPosY[highlight], '>', termbox.ColorWhite|termbox.AttrBlink|termbox.AttrBold, termbox.ColorDefault)
+	// termbox.SetCell(dynamicPosX+18, dynamicPosY, '<', termbox.ColorWhite|termbox.AttrBlink, termbox.ColorDefault)
+	termbox.Sync()
 }
 
 func displayBanner() {
@@ -55,7 +118,6 @@ func displayBanner() {
 		}
 		dynamicPosY++
 	}
-	termbox.SetCell(bannerPosX, dynamicPosY, '0', termbox.ColorRed, termbox.ColorDefault)
 
 	termbox.Sync()
 }

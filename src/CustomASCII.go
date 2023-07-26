@@ -9,4 +9,12 @@ var (
 		"╚██████╔╝╚██████╔╝       ██║   ███████║██║     ",
 		" ╚═════╝  ╚═════╝        ╚═╝   ╚══════╝╚═╝     ",
 	}
+
+	Options = []string{
+		"Speedcube",
+		"Get Scramble",
+		"View leaderboard",
+		"Timer",
+		"Quit",
+	}
 )
