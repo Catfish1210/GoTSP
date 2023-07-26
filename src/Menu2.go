@@ -53,18 +53,88 @@ func selectMenuItem(highlight int) {
 	if highlight == 0 {
 		Speedcube()
 	}
-	// fmt.Scanln()
+	if highlight == 2 {
+		ViewLeaderboard()
+	}
 }
 
-func Speedcube() {
+func ViewLeaderboard() {
 	ClearScreen()
-	//
 	err := termbox.Init()
 	if err != nil {
 		panic(err)
 	}
 	defer termbox.Close()
+	keyPress := make(chan termbox.Event)
+	go func() {
+		for {
+			keySeq := termbox.PollEvent()
+			keyPress <- keySeq
+		}
+	}()
 
+	a := GetTop10()
+	updateTop10Selection(a, 0)
+
+	termbox.SetCell(10, 10, 'A', termbox.ColorRed, termbox.ColorDefault)
+	termbox.Sync()
+
+	for {
+		keySeq := <-keyPress
+		if keySeq.Type == termbox.EventKey {
+			if keySeq.Key == termbox.KeyEsc || keySeq.Key == termbox.KeyCtrlC {
+				ClearScreen()
+				termbox.Close()
+				os.Exit(0)
+				break
+			}
+			if keySeq.Key == termbox.KeySpace {
+
+			}
+
+			if keySeq.Ch == 'w' {
+
+			}
+			if keySeq.Ch == 's' {
+
+			}
+		}
+	}
+}
+
+func updateTop10Selection(top10 [][]string, selected int) {
+	terminalWidth, _ := termbox.Size()
+	// dynamicPosX := terminalWidth / 2 - (len(Top10Banner)/2)
+	dynamicPosY := 2
+
+	for _, line := range Top10Banner {
+		dynamicPosX := (terminalWidth / 2) - (len(Top10Banner[0]) / 2)
+		for _, ch := range line {
+			termbox.SetCell(dynamicPosX, dynamicPosY, ch, termbox.ColorMagenta|termbox.AttrBold, termbox.ColorDefault)
+			dynamicPosX++
+		}
+		dynamicPosY++
+	}
+	//Display this
+	// for _, id := range top10 {
+	// 	for _, v := range id {
+	// 		dynamicPosX := (terminalWidth / 2)
+	// 		for _, ch := range v {
+	// 			termbox.SetCell(dynamicPosX, dynamicPosY, ch, termbox.ColorMagenta|termbox.AttrBold, termbox.ColorDefault)
+	// 			dynamicPosX++
+	// 		}
+	// 	}
+	// 	dynamicPosY++
+	// }
+}
+
+func Speedcube() {
+	ClearScreen()
+	err := termbox.Init()
+	if err != nil {
+		panic(err)
+	}
+	defer termbox.Close()
 	keyPress := make(chan termbox.Event)
 	go func() {
 		for {
@@ -73,12 +143,10 @@ func Speedcube() {
 		}
 	}()
 	timerStatus := false
-
 	terminalWidth, terminalHeight := termbox.Size()
 	dynamicPosX := terminalWidth / 2
 	dynamicPosY := (terminalHeight / 2) - 1
 	displayText(dynamicPosX, dynamicPosY, "Apply the scramble with white on the top and green on the front:")
-
 	scramble := GenerateScramble()
 	var scrambleString string
 	for i := 0; i < len(scramble); i++ {
@@ -89,7 +157,6 @@ func Speedcube() {
 	}
 	dynamicPosY++
 	displayText(dynamicPosX, dynamicPosY, scrambleString)
-
 	dynamicPosY += 2
 	displayText(dynamicPosX, dynamicPosY, "Press spacebar if the scramble is applied & you're ready to start the timer..")
 	userChoice := -1
@@ -104,6 +171,7 @@ func Speedcube() {
 			}
 			if keySeq.Key == termbox.KeySpace && timerStatus != true {
 				duration := Timer2()
+				ResultToJson(scramble, duration)
 				timerStatus = true
 				timeDecimal := fmt.Sprintf("%.3f", duration.Seconds())
 				asciiTime := FillAsciiContainer(timeDecimal)
@@ -111,14 +179,12 @@ func Speedcube() {
 				terminalWidth, terminalHeight := termbox.Size()
 				asciiPosX := (terminalWidth / 2)
 				asciiPosY := (terminalHeight / 2) - (terminalHeight / 5)
-
 				displayText(asciiPosX, asciiPosY+1, asciiTime.line1)
 				displayText(asciiPosX, asciiPosY+2, asciiTime.line2)
 				displayText(asciiPosX, asciiPosY+3, asciiTime.line3)
 				displayText(asciiPosX, asciiPosY+4, asciiTime.line4)
 				displayText(asciiPosX, asciiPosY+5, asciiTime.line5)
 				updateUserOption(asciiPosX, asciiPosY+7, -1)
-
 				termbox.Sync()
 			}
 			if keySeq.Key == termbox.KeySpace && timerStatus == true {
@@ -135,10 +201,8 @@ func Speedcube() {
 					os.Exit(0)
 					break
 				}
-
 			}
 		}
-
 		if keySeq.Ch == 'a' {
 			userChoice = 0
 			updateUserOption((terminalWidth / 2), ((terminalHeight/2)-(terminalHeight/5))+7, userChoice)
@@ -150,27 +214,19 @@ func Speedcube() {
 			termbox.Sync()
 		}
 	}
-
 }
 
-// 	// Apply selector for the highlighted option
-// 	termbox.SetCell(lSelectorPosX[highlight], lSelectorPosY[highlight], '>', termbox.ColorWhite|termbox.AttrBlink|termbox.AttrBold, termbox.ColorDefault)
-// 	termbox.SetCell(rSelectorPosX[highlight], rSelectorPosY[highlight], '<', termbox.ColorWhite|termbox.AttrBlink|termbox.AttrBold, termbox.ColorDefault)
-// 	termbox.Sync()
-// }
-
 func updateUserOption(x, y, highlighted int) {
-
 	exitOptions := []string{
 		"Return to Menu",
 		"Quit",
 	}
-	// Clean previous
+	// Clean previous selection
 	xj, _ := termbox.Size()
 	for xi := 0; xi < xj; xi++ {
 		termbox.SetCell(xi, y, ' ', termbox.ColorDefault, termbox.ColorDefault)
 	}
-
+	// Display selection w/ highlight
 	for i, option := range exitOptions {
 		if i == 0 {
 			x -= 15
@@ -202,9 +258,7 @@ func updateUserOption(x, y, highlighted int) {
 				termbox.SetCell(x, y, ch, termbox.ColorLightMagenta, termbox.ColorDefault)
 				x++
 			}
-
 		}
-
 	}
 }
 
@@ -220,14 +274,11 @@ func cleanTermbox() {
 
 func displayText(x, y int, text string) {
 	dynamicPosX, dynamicPosY := x, y
-
 	dynamicPosX -= (len(text) / 2)
-
 	for _, char := range text {
 		termbox.SetCell(dynamicPosX, dynamicPosY, char, termbox.ColorDefault, termbox.ColorDefault)
 		dynamicPosX++
 	}
-
 	termbox.Sync()
 }
 
@@ -243,7 +294,6 @@ func displayOptions(highlight int) {
 	dynamicPosY := optionPosY
 	for i, option := range Options {
 		dynamicPosX := optionPosX - len(Options[i])/2
-
 		for _, char := range option {
 			if i != highlight {
 				termbox.SetCell(dynamicPosX, dynamicPosY, char, termbox.ColorLightMagenta, termbox.ColorDefault)
@@ -253,12 +303,10 @@ func displayOptions(highlight int) {
 				dynamicPosX++
 			}
 		}
-
 		dynamicPosY += 2
 	}
 	displaySelector(optionPosX, optionPosY, highlight)
 	termbox.Sync()
-
 }
 
 func displaySelector(dynamicPosX, dynamicPosY, highlight int) {
@@ -284,7 +332,6 @@ func displayBanner() {
 	terminalWidth, terminalHeight := termbox.Size()
 	bannerPosX := (terminalWidth / 2) - (23)
 	bannerPosY := terminalHeight / 8
-
 	dynamicPosY := bannerPosY
 	for _, line := range Banner {
 		dynamicPosX := bannerPosX
@@ -294,6 +341,5 @@ func displayBanner() {
 		}
 		dynamicPosY++
 	}
-
 	termbox.Sync()
 }

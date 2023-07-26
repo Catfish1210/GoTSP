@@ -7,4 +7,5 @@ import (
 func main() {
 	Gotsp.ClearScreen()
 	Gotsp.Menu2()
+	// Gotsp.GetTop10()
 }
