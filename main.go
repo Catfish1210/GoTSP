@@ -2,8 +2,6 @@ package main
 
 import (
 	Gotsp "Gotsp/src"
-	"fmt"
-	"os"
 )
 
 // type asciiContainer struct {
@@ -22,60 +20,60 @@ import (
 
 func main() {
 	Gotsp.ClearScreen()
-	ui()
+	Gotsp.Menu()
 }
 
-func ui() {
-	Uinput := Gotsp.GetUserOption("Welcome to GoTSP", []string{"Speedcube", "Scramble", "View leaderboard", "Timer", "Quit"})
+// func ui() {
+// 	Uinput := Gotsp.GetUserOption("Welcome to GoTSP", []string{"Speedcube", "Scramble", "View leaderboard", "Timer", "Quit"})
 
-	if Uinput == "Speedcube" {
-		fmt.Println("Speedcube time")
-		Gotsp.ClearScreen()
-		fmt.Println("Apply the scramble with white on the top and green on the front:")
-		scramble := Gotsp.GenerateScramble()
-		fmt.Println(scramble)
-		fmt.Println("\nPress enter if the scramble is applied..")
-		fmt.Scanln()
+// 	if Uinput == "Speedcube" {
+// 		fmt.Println("Speedcube time")
+// 		Gotsp.ClearScreen()
+// 		fmt.Println("Apply the scramble with white on the top and green on the front:")
+// 		scramble := Gotsp.GenerateScramble()
+// 		fmt.Println(scramble)
+// 		fmt.Println("\nPress enter if the scramble is applied..")
+// 		fmt.Scanln()
 
-		duration := Gotsp.Timer()
-		Gotsp.ResultToJson(scramble, duration)
-		Gotsp.ClearScreen()
-		Gotsp.DisplayTimeASCII(duration)
+// 		duration := Gotsp.Timer()
+// 		Gotsp.ResultToJson(scramble, duration)
+// 		Gotsp.ClearScreen()
+// 		Gotsp.DisplayTimeASCII(duration)
 
-	} else if Uinput == "Scramble" {
-		Gotsp.ClearScreen()
-		fmt.Println("Apply the scramble with white on the top and green on the front:")
-		fmt.Println(Gotsp.GenerateScramble())
-	} else if Uinput == "View leaderboard" {
-		fmt.Println("Nothing much to see here")
-	} else if Uinput == "Timer" {
-		Gotsp.ClearScreen()
-		fmt.Println("Start/stop the timer with spacebar")
-		fmt.Println("Press any key to continue to the timer..")
-		fmt.Scanln()
-		Gotsp.ClearScreen()
-		duration := Gotsp.Timer()
-		if duration.Seconds() > 60 {
-			minutes := int(duration.Minutes())
-			seconds := int(duration.Seconds()) - (minutes * 60)
-			fmt.Printf("Timer stopped, Elapsed time: %dmin %dsec\n", minutes, seconds)
-		} else {
-			fmt.Printf("Timer stopped, Elapsed time: %.3f seconds\n", duration.Seconds())
-		}
-	} else if Uinput == "Quit" {
-		Gotsp.ClearScreen()
-		os.Exit(0)
-	}
-	fmt.Println()
-	Uinput = Gotsp.GetUserOption("What would you like to do?", []string{"Return to Main menu", "Quit"})
-	if Uinput == "Quit" {
-		Gotsp.ClearScreen()
-		os.Exit(0)
-	} else {
-		Gotsp.ClearScreen()
-		ui()
-	}
-}
+// 	} else if Uinput == "Scramble" {
+// 		Gotsp.ClearScreen()
+// 		fmt.Println("Apply the scramble with white on the top and green on the front:")
+// 		fmt.Println(Gotsp.GenerateScramble())
+// 	} else if Uinput == "View leaderboard" {
+// 		fmt.Println("Nothing much to see here")
+// 	} else if Uinput == "Timer" {
+// 		Gotsp.ClearScreen()
+// 		fmt.Println("Start/stop the timer with spacebar")
+// 		fmt.Println("Press any key to continue to the timer..")
+// 		fmt.Scanln()
+// 		Gotsp.ClearScreen()
+// 		duration := Gotsp.Timer()
+// 		if duration.Seconds() > 60 {
+// 			minutes := int(duration.Minutes())
+// 			seconds := int(duration.Seconds()) - (minutes * 60)
+// 			fmt.Printf("Timer stopped, Elapsed time: %dmin %dsec\n", minutes, seconds)
+// 		} else {
+// 			fmt.Printf("Timer stopped, Elapsed time: %.3f seconds\n", duration.Seconds())
+// 		}
+// 	} else if Uinput == "Quit" {
+// 		Gotsp.ClearScreen()
+// 		os.Exit(0)
+// 	}
+// 	fmt.Println()
+// 	Uinput = Gotsp.GetUserOption("What would you like to do?", []string{"Return to Main menu", "Quit"})
+// 	if Uinput == "Quit" {
+// 		Gotsp.ClearScreen()
+// 		os.Exit(0)
+// 	} else {
+// 		Gotsp.ClearScreen()
+// 		ui()
+// 	}
+// }
 
 // func GenerateScramble() []string {
 // 	var Scramble []string
