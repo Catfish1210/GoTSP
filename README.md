@@ -62,8 +62,9 @@ In this function, current time `time.Now()` is used as a seed for the Scramble g
 - [x]Scramble from []string to string for json/leaderboard
 - []House-keeping on final
 - [x]Sort by time for JSON (extra ID struct for JSON parsing)
-- []Create a new menu using only termbox
+- [x]Create a new menu using only termbox
+- []Display scramble w/ alternating colors (4 per section)
 ##### 
-***Completed 12/15***
+***Completed 13/16***
 
 
