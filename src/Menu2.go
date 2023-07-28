@@ -118,8 +118,15 @@ func updateTop10Selection(top10 [][]string, selected int) {
 		dynamicPosY++
 	}
 	dynamicPosY++
-	dynamicPosX := (terminalWidth / 2) - (len(top10[0]) / 2)
+	dynamicPosX := (terminalWidth / 2) - (len(top10[0][0]+top10[0][1]+top10[0][2]+top10[0][3]) / 2)
 	termbox.SetCell(dynamicPosX, dynamicPosY, 'A', termbox.ColorRed, termbox.ColorDefault)
+	for _, v := range top10 {
+		for _, ch := range v[0] {
+			termbox.SetCell(dynamicPosX, dynamicPosY, ch, termbox.ColorRed, termbox.ColorDefault)
+			// dynamicPosX++
+		}
+		dynamicPosY++
+	}
 
 }
 
