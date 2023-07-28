@@ -3,6 +3,7 @@ package Gotsp
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/nsf/termbox-go"
 )
@@ -75,7 +76,7 @@ func ViewLeaderboard() {
 
 	// a := GetTop10()
 	selected := 0
-	updateTop10Selection(GetTop10(), selected)
+	updateTop10Selection(GetTop10(), selected, false)
 	//
 
 	//
@@ -91,23 +92,23 @@ func ViewLeaderboard() {
 				os.Exit(0)
 				break
 			}
-			if keySeq.Key == termbox.KeySpace {
-
+			if keySeq.Key == termbox.KeySpace || keySeq.Key == termbox.KeyEnter {
+				updateTop10Selection(GetTop10(), selected, true)
 			}
 
 			if keySeq.Ch == 'w' && selected > 0 {
 				selected--
-				updateTop10Selection(GetTop10(), selected)
+				updateTop10Selection(GetTop10(), selected, false)
 			}
 			if keySeq.Ch == 's' && selected < 9 {
 				selected++
-				updateTop10Selection(GetTop10(), selected)
+				updateTop10Selection(GetTop10(), selected, false)
 			}
 		}
 	}
 }
 
-func updateTop10Selection(top10 [][]string, selected int) {
+func updateTop10Selection(top10 [][]string, selected int, displayScramble bool) {
 	terminalWidth, _ := termbox.Size()
 	// dynamicPosX := terminalWidth / 2 - (len(Top10Banner)/2)
 	dynamicPosY := 2
@@ -164,10 +165,32 @@ func updateTop10Selection(top10 [][]string, selected int) {
 			}
 			dynamicPosX++
 		}
-
 		dynamicPosY++
-		// if selected and enter --> display the scramble
 
+		// if selected and enter --> display the scramble (Breaks menu currently!!!)
+		if displayScramble == true {
+			dynamicPosY++
+			go showScramble(scoreEntry[3], dynamicPosX, dynamicPosY)
+		}
+		displayScramble = false
+
+	}
+	termbox.Sync()
+}
+
+func showScramble(scramble string, dynamicPosX, dynamicPosY int) {
+	cleanX := dynamicPosX
+	for _, ch := range scramble {
+		termbox.SetCell(dynamicPosX, dynamicPosY, ch, termbox.ColorDefault, termbox.ColorDefault)
+
+		dynamicPosX++
+	}
+	termbox.Sync()
+	time.Sleep(5 * time.Second)
+	dynamicPosX = cleanX
+	for i := 0; i < len(scramble); i++ {
+		termbox.SetCell(dynamicPosX, dynamicPosY, ' ', termbox.ColorDefault, termbox.ColorDefault)
+		dynamicPosX++
 	}
 	termbox.Sync()
 }
