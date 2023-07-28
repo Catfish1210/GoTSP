@@ -73,8 +73,9 @@ func ViewLeaderboard() {
 		}
 	}()
 
-	a := GetTop10()
-	updateTop10Selection(a, 0)
+	// a := GetTop10()
+	selected := 0
+	updateTop10Selection(GetTop10(), selected)
 	//
 
 	//
@@ -94,11 +95,13 @@ func ViewLeaderboard() {
 
 			}
 
-			if keySeq.Ch == 'w' {
-
+			if keySeq.Ch == 'w' && selected > 0 {
+				selected--
+				updateTop10Selection(GetTop10(), selected)
 			}
-			if keySeq.Ch == 's' {
-
+			if keySeq.Ch == 's' && selected < 9 {
+				selected++
+				updateTop10Selection(GetTop10(), selected)
 			}
 		}
 	}
@@ -122,27 +125,51 @@ func updateTop10Selection(top10 [][]string, selected int) {
 	// termbox.SetCell(dynamicPosX, dynamicPosY, 'A', termbox.ColorRed, termbox.ColorDefault)
 
 	for i, scoreEntry := range top10 {
-		dynamicPosX := (terminalWidth / 2) - (len(top10[0][0]+top10[0][1]+top10[0][2]+top10[0][3]) / 2)
+		dynamicPosX := (terminalWidth / 2) - (len(top10[0][0]+top10[0][1]+top10[0][2]) / 2) - 1
 		// Display position:
 		pos := i + 1
-		for _, ch := range string(pos) {
-			termbox.SetCell(dynamicPosX, dynamicPosY, ch, termbox.ColorRed, termbox.ColorDefault)
+
+		posString := fmt.Sprint(pos) + ". "
+
+		if pos == 10 {
+			posString = fmt.Sprint(pos) + "."
+		}
+
+		for _, ch := range posString {
+
+			termbox.SetCell(dynamicPosX, dynamicPosY, ch, termbox.ColorDefault, termbox.ColorDefault)
+			if i == selected {
+				termbox.SetCell(dynamicPosX, dynamicPosY, ch, termbox.ColorRed|termbox.AttrBold, termbox.ColorDefault)
+
+			}
 			dynamicPosX++
 		}
 		dynamicPosX++
 		// Display time:
 		for _, ch := range scoreEntry[1] {
-			termbox.SetCell(dynamicPosX, dynamicPosY, ch, termbox.ColorRed, termbox.ColorDefault)
+			termbox.SetCell(dynamicPosX, dynamicPosY, ch, termbox.ColorDefault, termbox.ColorDefault)
+			if i == selected {
+				termbox.SetCell(dynamicPosX, dynamicPosY, ch, termbox.ColorRed|termbox.AttrBold, termbox.ColorDefault)
+
+			}
 			dynamicPosX++
 		}
 		dynamicPosX++
 		// Display Date
+		for _, ch := range scoreEntry[2] {
+			termbox.SetCell(dynamicPosX, dynamicPosY, ch, termbox.ColorDefault, termbox.ColorDefault)
+			if i == selected {
+				termbox.SetCell(dynamicPosX, dynamicPosY, ch, termbox.ColorRed|termbox.AttrBold, termbox.ColorDefault)
+
+			}
+			dynamicPosX++
+		}
 
 		dynamicPosY++
 		// if selected and enter --> display the scramble
 
 	}
-
+	termbox.Sync()
 }
 
 func Speedcube() {
