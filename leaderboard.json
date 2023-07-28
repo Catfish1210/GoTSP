@@ -1,0 +1,72 @@
+[
+    {
+        "Date": "2023-07-26 18:33:56",
+        "Time": "0.511s",
+        "Scramble": "M L2 F' D2 F D L U2 B L' B2 D' F' U2"
+    },
+    {
+        "Date": "2023-07-26 15:33:38",
+        "Time": "0.642s",
+        "Scramble": "R2 L U D2 U B F L2 B' D2 R M D2 M B'"
+    },
+    {
+        "Date": "2023-07-26 15:33:34",
+        "Time": "0.660s",
+        "Scramble": "M2 U L' U L2 D R2 D' B L2 F R B' D R U2 L B"
+    },
+    {
+        "Date": "2023-07-26 18:36:01",
+        "Time": "1.040s",
+        "Scramble": "F2 B U B2 D F2 B R' L2 U B R' B' D2 R D' F2"
+    },
+    {
+        "Date": "2023-07-26 15:36:31",
+        "Time": "1.148s",
+        "Scramble": "D' B' U2 D' B F2 U M' F2 M' D2 F B U' R2 M"
+    },
+    {
+        "Date": "2023-07-26 15:32:26",
+        "Time": "1.170s",
+        "Scramble": "B' L M2 D' L U2 M L M D' F' M' U2 L B R2 U"
+    },
+    {
+        "Date": "2023-07-26 15:32:45",
+        "Time": "1.362s",
+        "Scramble": "D2 M' L2 F' M2 D M2 U' R2 F D U' R' D U2 L D L M2"
+    },
+    {
+        "Date": "2023-07-26 18:34:47",
+        "Time": "1.514s",
+        "Scramble": "M2 R M' U' D2 R' F2 B D B2 D' B2 D' M B' L2 D' F D2 L"
+    },
+    {
+        "Date": "2023-07-26 21:31:44",
+        "Time": "1.724s",
+        "Scramble": "D' U2 B D F2 M R U B' D R2 U D R2 U' R2 L D' F2 U"
+    },
+    {
+        "Date": "2023-07-26 18:39:03",
+        "Time": "1.756s",
+        "Scramble": "F' R' D R2 M D L2 F R M R' L' M' L U2 R F U2 D L' M"
+    },
+    {
+        "Date": "2023-07-26 18:39:21",
+        "Time": "2.037s",
+        "Scramble": "L' B L R B2 R L R' F' L2 D L2 R D2 R L D R M U B2"
+    },
+    {
+        "Date": "2023-07-26 18:33:50",
+        "Time": "2.550s",
+        "Scramble": "U2 F M U B2 F' B2 U B M2 L M L U' R M U2 B' M2"
+    },
+    {
+        "Date": "2023-07-26 15:10:33",
+        "Time": "3.017s",
+        "Scramble": "L2 U' M2 D' M2 R D F M D M U M D' L'"
+    },
+    {
+        "Date": "2023-07-26 15:32:41",
+        "Time": "11.319s",
+        "Scramble": "D R2 U' D2 R B F' U2 R U B' D U' R"
+    }
+]

@@ -75,8 +75,10 @@ func ViewLeaderboard() {
 
 	a := GetTop10()
 	updateTop10Selection(a, 0)
+	//
 
-	termbox.SetCell(10, 10, 'A', termbox.ColorRed, termbox.ColorDefault)
+	//
+
 	termbox.Sync()
 
 	for {
@@ -115,17 +117,10 @@ func updateTop10Selection(top10 [][]string, selected int) {
 		}
 		dynamicPosY++
 	}
-	//Display this
-	// for _, id := range top10 {
-	// 	for _, v := range id {
-	// 		dynamicPosX := (terminalWidth / 2)
-	// 		for _, ch := range v {
-	// 			termbox.SetCell(dynamicPosX, dynamicPosY, ch, termbox.ColorMagenta|termbox.AttrBold, termbox.ColorDefault)
-	// 			dynamicPosX++
-	// 		}
-	// 	}
-	// 	dynamicPosY++
-	// }
+	dynamicPosY++
+	dynamicPosX := (terminalWidth / 2) - (len(top10[0]) / 2)
+	termbox.SetCell(dynamicPosX, dynamicPosY, 'A', termbox.ColorRed, termbox.ColorDefault)
+
 }
 
 func Speedcube() {
