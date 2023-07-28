@@ -2,19 +2,18 @@ package main
 
 import (
 	Gotsp "Gotsp/src"
-	"fmt"
 )
 
 func main() {
 	Gotsp.ClearScreen()
-	// Gotsp.Menu2()
-	a := Gotsp.GetTop10()
-	for _, line := range a {
-		for i := 0; i < len(line); i++ {
-			fmt.Println(line[i])
-		}
-		fmt.Println()
-	}
+	Gotsp.Menu2()
+	// a := Gotsp.GetTop10()
+	// for _, line := range a {
+	// 	for i := 0; i < len(line); i++ {
+	// 		fmt.Println(line[i])
+	// 	}
+	// 	fmt.Println()
+	// }
 	/*
 			1
 		0.511s
