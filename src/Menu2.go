@@ -94,7 +94,7 @@ func ViewLeaderboard() {
 			}
 			if keySeq.Key == termbox.KeySpace || keySeq.Key == termbox.KeyEnter {
 				updateTop10Selection(GetTop10(), selected)
-				updateChosenScramble(GetTop10(), selected)
+				go updateChosenScramble(GetTop10(), selected)
 			}
 
 			if keySeq.Ch == 'w' && selected > 0 {
@@ -112,12 +112,23 @@ func ViewLeaderboard() {
 func updateChosenScramble(top10 [][]string, selected int) {
 	dynamicY := 9 + selected
 	terminalWidth, _ := termbox.Size()
-	dynamicX := (terminalWidth / 2) - (len(top10[0][0]+top10[0][1]+top10[0][2]) / 2) + 26
-
+	dynamicX := (terminalWidth / 2) - (len(top10[0][0]+top10[0][1]+top10[0][2]) / 2) + 22
+	delScramble := dynamicX
 	scrambleString := "> " + top10[selected][3]
-	displayText(dynamicX, dynamicY, scrambleString)
-	// termbox.SetCell(dynamicX, dynamicY, '0', termbox.ColorMagenta|termbox.AttrBold, termbox.ColorDefault)
-
+	for i, ch := range scrambleString {
+		if i != 1 && ch != ' ' {
+			termbox.SetCell(dynamicX, dynamicY, ch, termbox.ColorMagenta|termbox.AttrBlink, termbox.ColorDefault)
+		}
+		dynamicX++
+	}
+	termbox.Sync()
+	time.Sleep(6 * time.Second)
+	for _, ch := range scrambleString {
+		_ = ch
+		termbox.SetCell(delScramble, dynamicY, ' ', termbox.ColorDefault, termbox.ColorDefault)
+		delScramble++
+	}
+	termbox.Sync()
 }
 
 func updateTop10Selection(top10 [][]string, selected int) {
