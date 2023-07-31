@@ -76,7 +76,7 @@ func ViewLeaderboard() {
 
 	// a := GetTop10()
 	selected := 0
-	updateTop10Selection(GetTop10(), selected, false)
+	updateTop10Selection(GetTop10(), selected)
 	//
 
 	//
@@ -93,22 +93,34 @@ func ViewLeaderboard() {
 				break
 			}
 			if keySeq.Key == termbox.KeySpace || keySeq.Key == termbox.KeyEnter {
-				updateTop10Selection(GetTop10(), selected, true)
+				updateTop10Selection(GetTop10(), selected)
+				updateChosenScramble(GetTop10(), selected)
 			}
 
 			if keySeq.Ch == 'w' && selected > 0 {
 				selected--
-				updateTop10Selection(GetTop10(), selected, false)
+				updateTop10Selection(GetTop10(), selected)
 			}
 			if keySeq.Ch == 's' && selected < 9 {
 				selected++
-				updateTop10Selection(GetTop10(), selected, false)
+				updateTop10Selection(GetTop10(), selected)
 			}
 		}
 	}
 }
 
-func updateTop10Selection(top10 [][]string, selected int, displayScramble bool) {
+func updateChosenScramble(top10 [][]string, selected int) {
+	dynamicY := 9 + selected
+	terminalWidth, _ := termbox.Size()
+	dynamicX := (terminalWidth / 2) - (len(top10[0][0]+top10[0][1]+top10[0][2]) / 2) + 26
+
+	scrambleString := "> " + top10[selected][3]
+	displayText(dynamicX, dynamicY, scrambleString)
+	// termbox.SetCell(dynamicX, dynamicY, '0', termbox.ColorMagenta|termbox.AttrBold, termbox.ColorDefault)
+
+}
+
+func updateTop10Selection(top10 [][]string, selected int) {
 	terminalWidth, _ := termbox.Size()
 	// dynamicPosX := terminalWidth / 2 - (len(Top10Banner)/2)
 	dynamicPosY := 2
@@ -127,6 +139,7 @@ func updateTop10Selection(top10 [][]string, selected int, displayScramble bool) 
 
 	for i, scoreEntry := range top10 {
 		dynamicPosX := (terminalWidth / 2) - (len(top10[0][0]+top10[0][1]+top10[0][2]) / 2) - 1
+		// scramblePosY := dynamicPosY + 12
 		// Display position:
 		pos := i + 1
 
@@ -167,12 +180,13 @@ func updateTop10Selection(top10 [][]string, selected int, displayScramble bool) 
 		}
 		dynamicPosY++
 
-		// if selected and enter --> display the scramble (Breaks menu currently!!!)
-		if displayScramble == true {
-			dynamicPosY++
-			go showScramble(scoreEntry[3], dynamicPosX, dynamicPosY)
-		}
-		displayScramble = false
+		// if selected and enter --> display the scramble (Breaks menu currently!!!)[NEEDS REDOING]
+		// if displayScramble == true {
+		// 	dynamicPosY++
+		// 	go showScramble(scoreEntry[3], 0, 0)
+		// }
+		// displayScramble = false
+		//
 
 	}
 	termbox.Sync()
@@ -339,6 +353,7 @@ func cleanTermbox() {
 	termbox.Flush()
 }
 
+// center it to x and y
 func displayText(x, y int, text string) {
 	dynamicPosX, dynamicPosY := x, y
 	dynamicPosX -= (len(text) / 2)
